@@ -2,9 +2,9 @@
 #include <vector>
 #include "list_basic.cpp"
 
-void p_list(node* head)
+void p_list(ListNode* head)
 {
-    node* current = head;
+    ListNode* current = head;
     while (current) {
         printf("%d", current->val);
         current = current->next;
@@ -39,7 +39,7 @@ void test_reverse(){
     list->addAtTail(4);
     list->addAtTail(5);
     list->print_list();// 
-    node* head = list->reverseList(list);
+    ListNode* head = list->reverseList(list);
     p_list(head);
 }
 
@@ -51,7 +51,7 @@ void test_swap()
     list.addAtTail(3);
     list.addAtTail(4);
     list.print_list();// Output:32541
-    node* head = list.getHead();
+    ListNode* head = list.getHead();
     head = swapPairs(head);
     p_list(head);
     list.addAtTail(5);
