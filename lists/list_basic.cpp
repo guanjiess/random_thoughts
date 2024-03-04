@@ -39,25 +39,80 @@ ListNode* swapPairs(ListNode* head){
 ListNode* removeNthFromEnd(ListNode* head, int n) {
     ListNode* sentinal = new ListNode(0);
     sentinal->next = head;
-    ListNode* fast = head;
-    ListNode* slow = head;
-    //找到倒数第n个
-    int size = 0;
-    while (fast) {
-        size ++;
+    ListNode* fast = sentinal;
+    ListNode* slow = sentinal;
+    // 先让fast走n步
+    while (n && fast->next != nullptr) {
+        fast = fast->next;
+        n --;
+    }
+    // 以下写法可以避免访问空指针
+    // 调整fast的时序列，让fast在提前slow一步，以便slow进行删除
+    // 注意：倒数第m个的数字的下标是size-m
+    fast = fast->next;
+    while (fast != nullptr) {
+        slow = slow->next;
         fast = fast->next;
     }
-    //删除第n个
-    for (int i = 0; i < size - n - 1; i ++) {
-        slow = slow->next;
-    }
-    ListNode* n_node = slow->next;
-    ListNode* np1_node = slow->next->next;
-    slow->next = np1_node;
-    delete n_node;
+    slow->next = slow->next->next;
     return sentinal->next;
 }
 
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    ListNode* InterSect;
+    //注意，两个链表一旦发生相交，那么交点之后的所有节点都是相同的
+    //所以只需要找到有没有交点即可，思路如下
+    //1、分别求出链表长度，2、将两个链表末端对齐
+    //3、从短链开头处，逐个节点对比
+    int sizeA = 0, sizeB = 0;
+    ListNode* A_tmp = headA;
+    ListNode* B_tmp = headB;
+    while (A_tmp->next != nullptr) {
+        A_tmp = A_tmp->next;
+        sizeA ++;
+    }
+    while (B_tmp->next != nullptr) {
+        B_tmp = B_tmp->next;
+        sizeB ++;
+    }
+    if(A_tmp != B_tmp) return nullptr;
+    int steps = abs(sizeA-sizeB);
+    if(sizeA > sizeB){
+        while (steps--) {
+            headA = headA->next;            
+        }
+    } else {
+        while (steps--) {
+            headB = headB->next;            
+        }
+    }
+    while (headA != NULL) {
+        // 判断条件要放在前面，否则会产生遗漏情况
+        if(headA == headB ) return headA;
+        headA = headA->next;
+        headB = headB->next;
+    }
+    return NULL;        
+}
+ListNode *detectCycle(ListNode *head) {
+    ListNode* fast = head;
+    ListNode* slow = head;
+    while (fast->next!=NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+        //如果相遇，说明确实存在环
+        if(fast == slow){
+            ListNode* start1 = head;
+            ListNode* start2 = fast;
+            while (start1 != start2) {
+                start1 = start1->next;
+                start2 = start2->next;
+            }
+            return start2; 
+        }    
+    }
+    return NULL;    
+}
 class Solution{
     public:
         ListListNode* removeE(ListListNode* head, int E){
@@ -82,6 +137,9 @@ class Solution{
             return head;
         }
 };
+
+
+
 
 class LinkedList{
 
