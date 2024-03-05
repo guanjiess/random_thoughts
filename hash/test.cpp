@@ -4,6 +4,22 @@
 #include "hash_basic.cpp"
 using namespace std;
 
+void test_18()
+{
+    printf("----------->test for leetcode 18.\n");
+    vector<int> nums = {1,0,-1,0,-2,2};
+    int target = 0;
+    vector<vector<int>> ans = fourSum(nums, target);
+    for(auto it = ans.begin(); it != ans.end(); it++){
+        vector<int> four = *it;
+        for (auto it2 = four.begin(); it2 != four.end(); it2++) {
+            printf("%d ", *it2);
+        }
+        printf("\n");
+    } 
+    printf("\n");
+}
+
 void test_242()
 {
     printf("----------->test for leetcode 242.\n");
@@ -48,4 +64,5 @@ int main()
     test_242();
     test_349();
     test_202();
+    test_18();
 }

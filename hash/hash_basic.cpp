@@ -18,10 +18,21 @@ vector<vector<int>> fourSum(vector<int>& nums, int target) {
     // a + b + c + d，由外及里，每一层都要进行去重操作
     //叠加两层for循环，再使用双指针求解
     for (int i = 0; i < size; i++) {
-        if(nums[i] > target) return result;
-        if(i > 0 && nums[i] == nums[i-1]) continue;
+        //一级剪枝操作，由于nums[i]已经大于target，且后续的序列是递增的，显然后续不会有满足条件的结果
+        //故跳转到结尾处的return
+        //注意，进行剪枝操作时，判断对象都是当前循环层次下的和
+        if(nums[i] >= 0 && nums[i] > target) break;
+        //去重
+        if(i>0 && nums[i-1] == nums[i]){
+            continue;
+        }
         for(int j = i + 1; j < size; j ++){
             int sum12 = nums[i] + nums[j];
+            //二级剪枝操作
+            if(sum12 > target && sum12>=0) break;
+            if(j > i + 1 && nums[j] == nums[j-1]){
+                continue;
+            }
             //双指针遍历
             int left = j + 1;
             int right = nums.size() - 1;
@@ -33,10 +44,13 @@ vector<vector<int>> fourSum(vector<int>& nums, int target) {
                 }else if(sum < 0){
                     left ++;
                 }else{
-
+                    result.push_back({nums[i],nums[j],nums[left],nums[right]});
+                    //先去重，再向内收缩
+                    while(right > left && nums[left] == nums[left+1]) {left++;}
+                    while(right > left && nums[right] == nums[right-1]) {right--;}
+                    left ++;
+                    right --;
                 }
-                right --;
-                left ++;
             }
         }
     }
