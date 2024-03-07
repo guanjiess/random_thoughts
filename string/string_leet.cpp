@@ -1,7 +1,60 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include <iostream>
 using namespace std;
+
+
+// leetcode 28
+string srtStr(string haystack, string needle){
+    string ans;
+
+    return ans;
+}
+
+// leetcode 151
+string removeExtraSpace(string s){
+    //正常英语短语中，首尾没有空格、单词间只有一个空格，需要考虑去重
+    //" long live the   king "--> "long live the king"
+    string ans;
+    int len = s.length();
+    for (int i = 0; i < len; i++) {
+        if(s[i] != ' '){
+            //每经历一个while，拆出一个单词
+            //单词前补一个空格
+            if(i>0 && ans.length() != 0 && s[i] != ' ' ) ans += ' ';
+            while (s[i] != ' ') {
+                ans += s[i];
+                i ++;
+            }
+        }
+    }
+    return ans;
+}
+void reverse(string &s, int start, int end){
+    for(int i = start, j = end; i < j; i++, j--){
+        swap(s[i], s[j]);
+    }
+}
+
+string reverseWords(string s) {
+    string ans;
+    //step1. remove extra space
+    ans = removeExtraSpace(s);
+    cout << ans << endl;
+    reverse(ans, 0, ans.size()-1);
+    cout << ans << endl;
+    int start = 0;
+    for (int i = 0; i < ans.size(); i++) {
+        if(i == ans.size()-1) reverse(ans, start, i);
+        if(ans[i] == ' '){
+            reverse(ans, start, i-1);
+            start = i + 1;
+        }
+    }
+    cout << ans << endl;
+    return ans;
+}
 
 // leetcode 541
 string reverse_2k(string s, int len){
