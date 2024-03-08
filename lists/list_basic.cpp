@@ -97,8 +97,9 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
 ListNode *detectCycle(ListNode *head) {
     ListNode* fast = head;
     ListNode* slow = head;
-    while (fast->next!=NULL && fast->next != NULL) {
+    while (fast != NULL && fast->next != NULL) {
         slow = slow->next;
+        //还是要注意空指针异常
         fast = fast->next->next;
         //如果相遇，说明确实存在环
         if(fast == slow){
